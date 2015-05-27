@@ -1,0 +1,8 @@
+{% extends "layout.twig" %}
+
+{% block title %} Sucesso {% endblock %}
+
+{% block conteudo %} 
+    <p class="text-success">Produto deletado com sucesso! </p> 
+    <a href="{{ path('index') }}">Conferir lista de produtos.</a>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.twig" %}
+
+{% block title %} Alterar Produto {% endblock %}
+
+{% block h1 %} Insira as novas informações do produto {% endblock %}
+
+{% block conteudo %}
+   
+     <form id="form-prod" method="post" action=" {{ path('alterar')}} ">
+         
+        <input type="hidden" name="id" value="{{produto.id}}" />
+        <label id="nome">Produto:</label>
+        <input type="text" name="nome" placeholder="{{produto.nome}}" required />
+        <p class="text-info">Inserir o produto.</p><br>
+
+        <label id="valor">Valor:</label>
+        <input type="text" name="valor" placeholder="{{produto.valor}}" required />
+        <p class="text-info">Inserir o valor do produto.</p>
+
+        <label id="descricao">Descrição:</label>
+        <textarea name="descricao" placeholder="{{ produto.descricao }}"></textarea>
+        <p class="text-info">Inserir a descrição do produto.</p>
+        <input name="alterar" class="btn btn-primary" value="Alterar" type="submit" />
+
+       </form>  
+    
+    
+        
+{% endblock %}

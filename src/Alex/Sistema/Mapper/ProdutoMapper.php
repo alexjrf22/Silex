@@ -2,30 +2,31 @@
 
 namespace Alex\Sistema\Mapper;
 use Alex\Sistema\Interfaces\ProdutoInterface;
-use PDO;
-use Alex\Sistema\Interfaces\ProdutoMapperInterface;
 
-class ProdutoMapper implements ProdutoMapperInterface
+class ProdutoMapper
 {
-    public function inserir(ProdutoInterface $produto, PDO $pdo)
-    {     
-        
-        $query = "insert produtos (nome, descricao, valor) values (:nome, :descricao, :valor)";
-        $inserir = $pdo->prepare($query);
-        $inserir->bindValue(":nome", $produto->getNome($nome));
-        $inserir->bindValue(":descricao", $produto->getDescricao($descricao));
-        $inserir->bindValue(":valor", $produto->getValor($valor));
+    
+    private $produto;
 
-        $inserir->execute();
-        
-        if ($inserir->rowCount() > 0)
-        {
-            return 'Produto inserido com sucesso.';
-        }else
-        {
-            return 'Produto não foi inserido';
-        }
-        
-        
+    public function __construct(ProdutoInterface $produto) 
+    {
+        $this->produto = $produto;
+       
     }
+    //retorna um objeto produto com valores passados pelo usuario.
+    public function criarProduto(array $dados)
+    {
+       
+            $produto = $this->produto;
+            
+            $nome = $produto->setNome($_POST['nome']);
+            $descricao = $produto->setDescricao($_POST['descricao']);
+            $valor = $produto->setValor($_POST['valor']);
+
+            return ($produto);
+            
+    }
+        
+
 }
+

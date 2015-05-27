@@ -1,0 +1,35 @@
+{% extends "layout.twig" %}
+
+{% block title %} Lista De Produtos {% endblock %}
+
+{% block h1 %} Lista De Produtos {% endblock %}
+
+{% block conteudo %}
+    <a class="btn btn-primary" href="{{ path('cadastrar')}}">Novo Produto</a><br><br>
+    
+    <table class="table">
+        <tr>
+            <th>Nome</th>
+            <th>Valor</th>
+            <th>Descrição</th>
+            <th>Alterar</th>
+            <th>Deletar</th>
+        </tr>
+        
+        {% for produto in produtos %}
+            
+            <tr>
+                
+                <td>{{ produto.nome }}</td>
+                <td>{{ produto.valor }}</td>
+                <td>{{ produto.descricao }}</td>
+                <td><a  title="Alterar" href="{{path('produto')}}?id={{ produto.id }}&amp;nome={{ produto.nome }}&amp;valor={{ produto.valor }}&amp;descricao={{ produto.descricao }}"><i class="icon-edit"></i></a></td>           
+                <td><a  title="Deletar" href="{{path('deletar')}}?id={{ produto.id }}&amp;nome={{ produto.nome }}&amp;valor={{ produto.valor }}&amp;descricao={{ produto.descricao }}"><i class="icon-trash"></i></a></td>
+            </tr>
+        {% endfor %}
+        
+    </table>
+    
+    
+        
+{% endblock %}
