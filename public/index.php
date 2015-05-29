@@ -18,15 +18,15 @@
     //criando um produto;
     $app['criar_produto'] = function (){
         $objProduto = new Produto();
-        $produto = new ProdutoMapper($objProduto);
+        $produto = new ProdutoServices($objProduto);
         return $produto;
     };
 
-    //cria um serviço relacionado ao produto. Esse serviço possui um leke de opções 
+    //cria um mapeamento relacionado ao produto. Esse serviço possui um leke de opções 
     //(inserir, deletar, alterar e selecionar um ou mais registros da tabela produtos.)
     $app['service_produto'] = function () use ($app){
         $pdo = $app['pdo'];
-        $servico = new ProdutoServices($produto, $pdo);
+        $servico = new ProdutoMapper($produto, $pdo);
         return $servico;
     };
     
