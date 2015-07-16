@@ -1,12 +1,12 @@
 <?php
 
 namespace Alex\Sistema\Mapper;
-use Alex\Sistema\Interfaces\ProdutoInterface;
+use Alex\Sistema\Entity\Produto;
 use PDO;
     
 class ProdutoMapper
 {
-    public function inserir(ProdutoInterface $produto, \PDO $pdo)
+    public function inserir(Produto $produto, \PDO $pdo)
     {     
         
         $query = "insert produtos (nome, descricao, valor) values (:nome, :descricao, :valor)";
@@ -15,11 +15,11 @@ class ProdutoMapper
         {
             
             $inserir = $pdo->prepare($query);
-            $inserir->bindValue(":nome", $produto->getNome($nome));
-            $inserir->bindValue(":descricao", $produto->getDescricao($descricao));
-            $inserir->bindValue(":valor", $produto->getValor($valor));
+            $inserir->bindValue(":nome", $produto->getNome());
+            $inserir->bindValue(":descricao", $produto->getDescricao());
+            $inserir->bindValue(":valor", $produto->getValor());
 
-            return $inserir->execute();
+            return $inserir->execute() ? true : false;
             
         }  
         catch (\PDOException $e)
@@ -68,27 +68,27 @@ class ProdutoMapper
     
     }
     
-    public function alterar($id, ProdutoInterface $produto, PDO $pdo)
+    public function alterar(Produto $produto, PDO $pdo)
     {
         
-        $query = "update produtos set nome=:nome, valor=:valor, descricao=:descricao where id=:id";
+        $query = "update produtos set nome= :nome, valor= :valor, descricao= :descricao where id= :id";
         
         try
         {
             
             $alterar = $pdo->prepare($query);
-            $alterar->bindValue(":id", $id);
-            $alterar->bindValue(":nome", $produto->getNome($nome));
-            $alterar->bindValue(":valor", $produto->getValor($valor));
-            $alterar->bindValue(":descricao", $produto->getDescricao($descricao));
-            return $alterar->execute();
+            $alterar->bindValue(":id", $produto->getId());
+            $alterar->bindValue(":nome", $produto->getNome());
+            $alterar->bindValue(":valor", $produto->getValor());
+            $alterar->bindValue(":descricao", $produto->getDescricao());
+            return $alterar->execute() ? true : false;
                    
         }
         catch (\PDOException $e)
         {
             return $e->getMessage();
         }
-    
+        
     }
     
       public function deletar($id, PDO $pdo)
@@ -101,7 +101,7 @@ class ProdutoMapper
             
             $delete = $pdo->prepare($query);
             $delete->bindValue(":id", $id);
-            return $delete->execute();
+            return $delete->execute() ? true : false;;
                    
         }
         catch (\PDOException $e)

@@ -1,14 +1,13 @@
 <?php
 
 namespace Alex\Sistema\Entity;
-use Alex\Sistema\Interfaces\ProdutoInterface;
 
-class Produto implements ProdutoInterface
+class Produto 
 {
-    private $id;
-    private $nome;
-    private $descricao;
-    private $valor;
+    public $id;
+    public $nome;
+    public $descricao;
+    public $valor;
             
     public function getId() {
         return $this->id;

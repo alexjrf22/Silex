@@ -1,14 +1,14 @@
 <?php
 
 namespace Alex\Sistema\Services;
-use Alex\Sistema\Interfaces\ProdutoInterface;
+use Alex\Sistema\Entity\Produto;
 
 class ProdutoServices
 {
     
     private $produto;
 
-    public function __construct(ProdutoInterface $produto) 
+    public function __construct(Produto $produto) 
     {
         $this->produto = $produto;
        
@@ -18,10 +18,10 @@ class ProdutoServices
     {
        
             $produto = $this->produto;
-            
-            $nome = $produto->setNome($_POST['nome']);
-            $descricao = $produto->setDescricao($_POST['descricao']);
-            $valor = $produto->setValor($_POST['valor']);
+            $produto->setId($dados['id']);
+            $produto->setNome($dados['nome']);
+            $produto->setDescricao($dados['descricao']);
+            $produto->setValor($dados['valor']);
 
             return ($produto);
             
