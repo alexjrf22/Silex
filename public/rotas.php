@@ -6,30 +6,45 @@
     })->bind("cadastrar");
     
     //rota para inserir um produto novo.
-    $app->post("/inserir", function() use ($app){
+    $app->post("/inserir", function() use($app){
 
         $pdo = $app['pdo'];
+        $validador = $app['validar_produto'];
 
         if (isset($_POST['enviar']))
         {   
             $dados = array("nome"=>$_POST['nome'], "descricao"=>$_POST['descricao'], "valor"=>$_POST['valor']); 
             $produto = $app['criar_produto']->criarProduto($dados);
-            $resultado = $app['service_produto']->inserir($produto, $pdo);
             
-            if ($resultado > 0){
+            $produtoValidate = $validador->validarProduto($produto);
+            
+            $validacao = ($produtoValidate === true) ? false : $produtoValidate;
+
+            if ($validacao === false)
+            {
+                $resultado = $app['service_produto']->inserir($produto, $pdo);
+            
+                if ($resultado > 0)
+                {
                 
-                return $app['twig']->render('prod_inserido.twig');
+                    return $app['twig']->render('prod_inserido.twig');
+                
+                }
+                else
+                {
+                    return print 'Desculpe ocorreu um erro ao cadastrar seu produto. Por gentileza tente novamente'; 
+                }   
                 
             }else
             {
-                return $resultado;
-            }   
-                
+               return $app->json($validacao); 
+            }
+            
         }else
         {
-            echo 'Erro ao tentar cadastrar produto.';
+            return print 'Desculpe ocorreu um erro ao cadastrar seu produto. Por gentileza tente novamente';      
         }
-
+                
     })->bind("inserir");
      
     //rota para selecionar todos os produtos.

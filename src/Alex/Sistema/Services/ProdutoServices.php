@@ -18,11 +18,11 @@ class ProdutoServices
     {
        
             $produto = $this->produto;
-            $produto->setId($dados['id']);
+            (!empty($dados['id'])) ? $produto->setId($dados['id']) : null;
             $produto->setNome($dados['nome']);
             $produto->setDescricao($dados['descricao']);
             $produto->setValor($dados['valor']);
-
+           
             return ($produto);
             
     }

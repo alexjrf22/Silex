@@ -1,6 +1,10 @@
 
 <?php
-
+    
+    //mostrar erros se houver 
+    ini_set("display_errors", true);
+    error_reporting(E_ALL);
+    
     require_once __DIR__ . '/../bootstrap.php';
     require_once 'servicos.php';
     require_once 'rotas.php';
@@ -28,13 +32,21 @@
     $app->post("/api/produtos", function (Request $request) use ($app){
 
         $pdo = $app['pdo'];
+        $validador = $app['validar_produto'];
+
         $dados['nome'] = $request->get('nome');
         $dados['valor'] = $request->get('valor');
         $dados['descricao'] = $request->get('descricao');
         $produto = $app['criar_produto']->criarProduto($dados);
-        $resultado = $app['service_produto']->inserir($produto, $pdo);
-
-
+        
+        $produtoValidate = $validador->validarProduto($produto);
+            
+        $validacao = ($produtoValidate === true) ? false : $produtoValidate;
+        
+        if ($validacao === false)
+        {
+           $resultado = $app['service_produto']->inserir($produto, $pdo);
+           
            if(is_bool($resultado) && $resultado == true)
            {
                return $app->json(['sucesso'=> "Produto Cadastrado com Sucesso!"]);
@@ -42,6 +54,11 @@
            {
                return $app->json($resultado);
            } 
+        }else
+        {
+            return $app->json($validacao); 
+        }
+                
 
     });
 
