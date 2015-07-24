@@ -78,6 +78,7 @@
     $app->post("/alterar", function() use ($app){
 
         $pdo = $app['pdo'];
+        $validador = $app['validar_produto'];
         (int)$id = $_REQUEST['id'];
 
         if (isset($_POST['alterar']))
@@ -85,20 +86,33 @@
            
            $dados = array("id"=>$id, "nome"=>$_POST['nome'], "descricao"=>$_POST['descricao'], "valor"=>$_POST['valor']); 
            $produto = $app['criar_produto']->criarProduto($dados);
-           $resultado = $app['service_produto']->alterar($produto, $pdo);
+           
+            $produtoValidate = $validador->validarProduto($produto);
             
-            if ($resultado > 0){
+            $validacao = ($produtoValidate === true) ? false : $produtoValidate;
+
+            if ($validacao === false)
+            {
                 
-                return $app['twig']->render('alterado_sucess.twig');
+                $resultado = $app['service_produto']->alterar($produto, $pdo);
+            
+                if ($resultado > 0)
+                {
+             
+                    return $app['twig']->render('alterado_sucess.twig');
                 
+                }else
+                {
+                    return $resultado;
+                } 
             }else
             {
-                return $resultado;
-            }   
+                return $app->json($validacao);
+            }
                 
         }else
         {
-            echo 'Erro ao tentar alterar produto.';
+            return print 'Erro ao tentar alterar produto.';
         }
 
     })->bind("alterar");

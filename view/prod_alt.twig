@@ -10,15 +10,15 @@
          
         <input type="hidden" name="id" value="{{produto.id}}" />
         <label id="nome">Produto:</label>
-        <input type="text" name="nome" placeholder="{{produto.nome}}" required />
+        <input type="text" name="nome" value="{{produto.nome}}" required />
         <p class="text-info">Inserir o produto.</p><br>
 
         <label id="valor">Valor:</label>
-        <input type="text" name="valor" placeholder="{{produto.valor}}" required />
+        <input type="text" name="valor" value="{{produto.valor}}" required />
         <p class="text-info">Inserir o valor do produto.</p>
 
         <label id="descricao">Descrição:</label>
-        <textarea name="descricao" placeholder="{{ produto.descricao }}"></textarea>
+        <textarea name="descricao">{{ produto.descricao }}</textarea>
         <p class="text-info">Inserir a descrição do produto.</p>
         <input name="alterar" class="btn btn-primary" value="Alterar" type="submit" />
 

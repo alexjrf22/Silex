@@ -71,16 +71,29 @@
         $dados['valor'] = $request->get('valor');
         $dados['descricao'] = $request->get('descricao');
         $produto = $app['criar_produto']->criarProduto($dados);
-        $resultado = $app['service_produto']->alterar($produto, $pdo);
-       
-       if(is_bool($resultado) && $resultado == true)
-       {
-           return $app->json(['sucesso'=> "Produto Alterado Com Sucesso!"]);
-       }else
-       {
-           return $app->json($resultado);
-       } 
+        $validador = $app['validar_produto'];
+        $produtoValidate = $validador->validarProduto($produto);
+        
+        $validacao = ($produtoValidate === true) ? false : $produtoValidate;
+        
+        if ($validacao === false)
+        {
 
+            $resultado = $app['service_produto']->alterar($produto, $pdo);
+
+           if(is_bool($resultado) && $resultado == true)
+           {
+               return $app->json(['sucesso'=> "Produto Alterado Com Sucesso!"]);
+           }else
+           {
+               return $app->json($resultado);
+           } 
+        }else
+        {
+           return $app->json($validacao); 
+        }
+        
+           
     });
 
     //removendo um registro.
